@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Scanner;
 /**
@@ -61,4 +62,47 @@ public class TaskOrganiser {
        }
     	
     }
+ /**
+  * Shows all the tasks
+  * @author  Swati Gupta
+  * 
+  */
+ public void showTaskList()
+ {
+ 	
+    System.out.println("Total tasks in your to do list are "+todoinitialization.count);
+       for(Task todo:todoinitialization.tasktList) 
+       {
+ 	    String status= todo.getTaskStatus();
+ 	    todo.toString();
+ 	     System.out.println("Task ::" +" status is :: " + status +" and description is :: "+
+ 	     todo.getTaskDescrption()+" and Id is  "+
+ 	     todo.getTaskDescrptionId()+ "  and dueDate is  "+
+ 	     todo.getDueDate()); 
+ 	  
+        }
+ }
+       /**
+        * Sort all the tasks by date
+        * @author  Swati Gupta
+        * 
+        */
+ //add changes
+       public void sortByDate()
+       {
+    	   Collections.sort(todoinitialization.tasktList);
+          System.out.println("Total tasks in your to do list are "+todoinitialization.count);
+             for(Task todo:todoinitialization.tasktList) 
+             {
+       	    String status= todo.getTaskStatus();
+       	    todo.toString();
+       	     System.out.println("Task ::" +" status is :: " + status +" and description is :: "+
+       	     todo.getTaskDescrption()+" and Id is  "+
+       	     todo.getTaskDescrptionId()+ "  and dueDate is  "+
+       	     todo.getDueDate()); 
+       	  
+              }
+   
+ }
+ 
  }

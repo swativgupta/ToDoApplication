@@ -16,9 +16,9 @@ public class toDoInitializations {
 		count=tasktList.size();
 		System.out.println("The size of list is "+count);
 		Task task1 = new Task("task1", "12/30/2019", "todo");
-		Task task2 = new Task("task1", "12/30/2019", "todo");
-		Task task3 = new Task("task1", "12/30/2019", "todo");
-		Task task4 = new Task("task1", "12/30/2019", "todo");
+		Task task2 = new Task("task2", "12/30/2018", "pending");
+		Task task3 = new Task("task3", "12/30/2019", "todo");
+		Task task4 = new Task("task4", "12/31/2019", "pending");
 		tasktList.add(task1);
 		tasktList.add(task2);
 		tasktList.add(task3);

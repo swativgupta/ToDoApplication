@@ -73,7 +73,7 @@ public class EntryPoint {
 		
 		todoinitialization.count=  todoinitialization.loadAllTasks().size() ;
 		System.out.println("The value of count is set to "+todoinitialization.count);
-	   Scanner reader = new Scanner(System.in);  
+	    Scanner reader = new Scanner(System.in);  
 		 System.out.println("Enter a  menu: ");
 		 String n = reader.nextLine();  
 		// boolean wantToQuit = false;
@@ -87,8 +87,15 @@ public class EntryPoint {
 	                boolean val=taskOrganiser.createTask("First Task", "09/29/2018", "todo");
 	            	System.out.println(val);
 	                System.out.println("_______________________________.");
-	                break;        
-	       
+	                break; 
+	            case "Show Task":
+	            	 taskOrganiser.showTaskList();
+	            	 break; 
+	            case "Sort By Date":
+	            	 taskOrganiser.sortByDate();
+	            	 break; 
+	            	 
+	            	 
 	        }
 	        
 	    }

@@ -12,7 +12,7 @@ import java.util.Set;
  * @author  Swati Gupta
  * @version 2018.09.27
  */
-public class Task {
+public class Task implements Comparable<Task> {
 	
 	private String taskId;
     private String taskStatus;	
@@ -23,9 +23,9 @@ public class Task {
     public Task(String taskDescription,String dueDate ,String taskStatus) 
     {
      	System.out.println("Inside the task constructor");
-        this.taskDescrption = taskDescrption;
-        this.taskId=taskId+generateId();// Need to improve to get a unique Id
-        this.taskStatus="taskStatus";
+        this.taskDescrption = taskDescription;
+        this.taskId=taskDescription+generateId();// Need to improve to get a unique Id
+        this.taskStatus=taskStatus;
         this.dueDate=dueDate;
         System.out.println("Exit of Task constructor");
     	
@@ -39,6 +39,13 @@ public class Task {
         this.dueDate=dueDate;
     }
     
+
+	@Override
+	public int compareTo(Task task) {
+		if (getDueDate() == null || task.getDueDate() == null)
+		      return 0;
+		    return getDueDate().compareTo(task.getDueDate());
+	}
 	
 	
     
@@ -91,7 +98,7 @@ public class Task {
 				+ ", taskStatus=" + taskStatus + ", taskDescrption=" + taskDescrption + ", projectDescription="
 				+ projectDescription + ", dueDate=" + dueDate + "]";
 	}
-	
+
 	
 	
 	
