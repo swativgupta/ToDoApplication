@@ -14,30 +14,33 @@ import java.util.Set;
  */
 public class Task {
 	
-	private String taskDescrptionId;
+	private String taskId;
     private String taskStatus;	
     private String taskDescrption;
     private String projectDescription ;
     private String dueDate;
-    
+    static Integer count = 0;
     public Task(String taskDescription,String dueDate ,String taskStatus) 
     {
-     	
+     	System.out.println("Inside the task constructor");
         this.taskDescrption = taskDescrption;
-        this.taskDescrptionId=taskDescrption+generateId();// Need to improve to get a unique Id
+        this.taskId=taskId+generateId();// Need to improve to get a unique Id
         this.taskStatus="taskStatus";
         this.dueDate=dueDate;
+        System.out.println("Exit of Task constructor");
     	
     }
     
     public Task() 
     {
         this.taskDescrption = "Hard Code Description";
-        this.taskDescrptionId=taskDescrption+generateId();
+        this.taskId=taskDescrption+generateId();
         this.taskStatus="todo";
         this.dueDate=dueDate;
     }
-   
+    
+	
+	
     
     public String getDueDate() {
 		return dueDate;
@@ -53,10 +56,10 @@ public class Task {
 		this.taskDescrption = taskDescrption;
 	}
 	public String getTaskDescrptionId() {
-		return taskDescrptionId;
+		return taskId;
 	}
-	public void setTaskDescrptionId(String taskDescrptionId) {
-		this.taskDescrptionId = taskDescrptionId;
+	public void setTaskDescrptionId(String taskId) {
+		this.taskId = taskId;
 	}
 	public String getTaskStatus() 
 	{
@@ -74,18 +77,17 @@ public class Task {
 	   */	
 	
 	public int generateId(){  
-        int randomId = 0;    
-        Random rand = new Random();     
-        for (int j=0;j < 10;j++)    
-       {       
-           randomId = rand.nextInt();      
-       }     
-          return randomId;     
+        
+        System.out.println("Going to call to do initialization");
+        
+         count=count+1;
+         System.out.println("New task id is generated and it is "+count); 
+          return count;     
     }
 
 	@Override
 	public String toString() {
-		return "Task [taskDescrptionId=" + taskDescrptionId
+		return "Task [taskId=" + taskId
 				+ ", taskStatus=" + taskStatus + ", taskDescrption=" + taskDescrption + ", projectDescription="
 				+ projectDescription + ", dueDate=" + dueDate + "]";
 	}

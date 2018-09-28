@@ -15,8 +15,9 @@ import java.util.List;
 
 public class EntryPoint {
 	TaskOrganiser taskOrganiser = new TaskOrganiser();
+	toDoInitializations todoinitialization = new toDoInitializations();
 	
-	Task task = new Task();
+	
 	
 	/**
 	 * contains all the valid command words for to do App
@@ -69,6 +70,9 @@ public class EntryPoint {
 	 */
 	public void mainMenu() {
 		myMainMenuList();
+		
+		todoinitialization.count=  todoinitialization.loadAllTasks().size() ;
+		System.out.println("The value of count is set to "+todoinitialization.count);
 	   Scanner reader = new Scanner(System.in);  
 		 System.out.println("Enter a  menu: ");
 		 String n = reader.nextLine();  

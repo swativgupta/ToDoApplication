@@ -11,9 +11,8 @@ import java.util.Scanner;
  */
 public class TaskOrganiser {
 	
-	
 	Validation validate =new Validation();
-	
+	toDoInitializations todoinitialization = new toDoInitializations();
     protected void showTasks()
     {
     	
@@ -46,16 +45,18 @@ public class TaskOrganiser {
     
  public boolean createTask(String taskDescription,String dueDate ,String taskStatus) 
     {	
-       if( validate.validateTask() && (validate.validateDate(dueDate)!=null))
+       if( validate.validateDate(dueDate)!=null)
        {
     	System.out.println("Inside create task after validation");
     	Task task = new Task(taskDescription,dueDate,taskStatus);
-      
+    	System.out.println("Task is created and going to add in task list");
+    	todoinitialization.tasktList.add(task);
     	return true;
     	
        }
        else
        {
+    	   System.out.println("Task is NOT CREATED and going to add in task list");
     	  return false; 
        }
     	
