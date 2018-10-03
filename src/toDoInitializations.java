@@ -8,9 +8,12 @@ import java.util.ArrayList;
 public class toDoInitializations {
 	
 	static ArrayList<Task> tasktList = new ArrayList<>();
-	
+	functionalReader readerf = new functionalReader();
+    
 	static Integer count = 0 ;
 	
+	 
+	/*
 	public ArrayList<Task> loadAllTasks(){
 		System.out.println("Here all the pre existing tasks will be loaded");
 		count=tasktList.size();
@@ -25,6 +28,30 @@ public class toDoInitializations {
 		tasktList.add(task4);
 		count=tasktList.size();
 		System.out.println("After loading the task list the value of size is ::"+count);
+		return tasktList;
+		
+	}*/
+	
+	public ArrayList<Task> loadAllTasks(){
+		System.out.println("Here all the pre existing tasks in file will be loaded");
+		ArrayList<Task> tasks = new ArrayList<>();
+		
+		tasks=readerf.getTasks("test.csv");
+		if(tasks.size()>=1) {
+		tasks.remove(0);
+		 for(Task task: tasks) {
+	        	
+			 tasktList.add(task);
+	        	
+	        }
+		 count=tasktList.size();
+		System.out.println("After loading the task list the value of size is ::"+count);
+		for(Task task: tasktList) {
+        	System.out.println(task.toString());
+        	
+        	
+        }
+		}
 		return tasktList;
 		
 	}

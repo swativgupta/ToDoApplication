@@ -19,7 +19,17 @@ public class Task implements Comparable<Task> {
     private String taskDescrption;
     private String projectDescription ;
     private String dueDate;
-    static Integer count = 0;
+   
+
+	public String getProjectDescription() {
+		return projectDescription;
+	}
+
+	public void setProjectDescription(String projectDescription) {
+		this.projectDescription = projectDescription;
+	}
+
+	static Integer count = 0;
     public Task(String taskDescription,String dueDate ,String taskStatus) 
     {
      	System.out.println("Inside the task constructor");
@@ -39,6 +49,16 @@ public class Task implements Comparable<Task> {
         this.dueDate=dueDate;
     }
     
+
+	public Task(String taskId, String taskDescription, String taskStatus, String projectDescription, String dueDate) {
+		
+		 this.taskId=taskId;
+		 this.taskDescrption = taskDescription;
+	       
+	        this.taskStatus=taskStatus;
+	        this.projectDescription=projectDescription;
+	        this.dueDate=dueDate;
+	}
 
 	@Override
 	public int compareTo(Task task) {
@@ -98,9 +118,5 @@ public class Task implements Comparable<Task> {
 				+ ", taskStatus=" + taskStatus + ", taskDescrption=" + taskDescrption + ", projectDescription="
 				+ projectDescription + ", dueDate=" + dueDate + "]";
 	}
-
-	
-	
-	
 	
 }

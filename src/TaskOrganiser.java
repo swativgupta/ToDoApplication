@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +13,10 @@ import java.util.Scanner;
  */
 public class TaskOrganiser {
 	
+	UserInput userInput =new UserInput();
 	Validation validate =new Validation();
-	toDoInitializations todoinitialization = new toDoInitializations();
+	WritingToCSV writeCsv = new WritingToCSV();
+	
     protected void showTasks()
     {
     	
@@ -51,7 +54,7 @@ public class TaskOrganiser {
     	System.out.println("Inside create task after validation");
     	Task task = new Task(taskDescription,dueDate,taskStatus);
     	System.out.println("Task is created and going to add in task list");
-    	todoinitialization.tasktList.add(task);
+    	toDoInitializations.tasktList.add(task);
     	return true;
     	
        }
@@ -70,8 +73,8 @@ public class TaskOrganiser {
  public void showTaskList()
  {
  	
-    System.out.println("Total tasks in your to do list are "+todoinitialization.count);
-       for(Task todo:todoinitialization.tasktList) 
+    System.out.println("Total tasks in your to do list are "+toDoInitializations.count);
+       for(Task todo:toDoInitializations.tasktList) 
        {
  	    String status= todo.getTaskStatus();
  	    todo.toString();
@@ -88,11 +91,12 @@ public class TaskOrganiser {
         * 
         */
  //add changes
-       public void sortByDate()
+      
+ public void sortByDate()
        {
-    	   Collections.sort(todoinitialization.tasktList);
-          System.out.println("Total tasks in your to do list are "+todoinitialization.count);
-             for(Task todo:todoinitialization.tasktList) 
+    	   Collections.sort(toDoInitializations.tasktList);
+          System.out.println("Total tasks in your to do list are "+toDoInitializations.count);
+             for(Task todo:toDoInitializations.tasktList) 
              {
        	    String status= todo.getTaskStatus();
        	    todo.toString();
@@ -104,5 +108,119 @@ public class TaskOrganiser {
               }
    
  }
- 
+	public void assignProject(String taskID) {
+		System.out.println("Your  task Id is "+taskID +"and you are going to assign a project to it");
+		
+		if(fetchTaskById(taskID)!=null)
+		{
+		Task task=fetchTaskById(taskID);
+				
+	//			updateTask(task.getTaskDescrptionId());
+		
+			
+		}else {
+			
+			System.out.println("Please enter a valid Task ID");
+		}
+		
+	}
+	
+	/**
+     * Update the task for specified task Id in parameter
+     * @author  Swati Gupta
+     * @pram String taskID
+     * @return boolean status
+     */
+	
+	
+	
+	/**
+     * Delete the task for specified task Id in parameter
+     * @author  Swati Gupta
+     * @pram String taskID
+     * @return boolean status
+     */
+	
+	
+	public boolean removeTask(String taskID) {
+		System.out.println("You are about to remove the task with task ID :: " +taskID);
+		boolean status = false;
+		if(fetchTaskById(taskID)!=null)
+		{
+		Task task=fetchTaskById(taskID);
+				
+		status=toDoInitializations.tasktList.remove(task);
+		
+			
+		}else {
+			
+			System.out.println("No Task Deleted");	
+		}
+		System.out.println("Task deletion status for the task with task ID is :: " +taskID);
+		return status;
+		
+	}
+	
+	/**
+     * Utility function to fetch the task for given task ID
+     * @author  Swati Gupta
+     * @pram String taskID
+     * @return Task Object
+     */
+	
+	
+	public Task fetchTaskById(String taskID) {
+		System.out.println("Fetching task for task Id :: " + taskID);
+		Task taskForId=null;
+		for(Task todo:toDoInitializations.tasktList) {
+			if(todo.getTaskDescrptionId().equals(taskID)) {
+				
+				taskForId= todo;
+				System.out.println("Fetched task for task Id :: " + taskID +" About to break");
+				break;
+			}else {
+		System.out.println("There is no task with task Id :: " + taskID);		
+				taskForId = null;
+			}
+			
+		}
+		return taskForId;
+		
+		
+	}
+	public void updateTask(Task task, String feild) {
+		switch (feild) {
+        
+		case "Due Date":
+			System.out.println("Please enter date to be updated");
+			task.setDueDate(userInput.takeInput());
+			break;
+        case "Task Description": 
+        	System.out.println("Please enter task description to be updated");
+			task.setTaskDescrption(userInput.takeInput());
+			break;
+        case "Task Status": 
+        	System.out.println("Please enter task status to be updated");
+			task.setTaskStatus(userInput.takeInput());
+			break;
+        case "Project": 
+        	System.out.println("Please enter Project to be updated");
+        	String inputValue=userInput.takeInput();
+			task.setProjectDescription(inputValue);
+			break;
+		
+	}
+		System.out.println(task.toString());
+		
+	}
+	public void saveToFile() {
+		
+		try {
+			writeCsv.writeToFile();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
  }

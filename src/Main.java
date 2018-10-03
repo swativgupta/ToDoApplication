@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,8 +21,11 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		EntryPoint entry= new EntryPoint();
+		//toDoInitializations.tasktList;
+		toDoInitializations todoinitialization = new toDoInitializations();
+		todoinitialization.tasktList=todoinitialization.loadAllTasks();
+		//todoinitialization.count=  todoinitialization.loadAllTasks().size() ;
 	    entry.mainMenu();
-		//WriteDataToExcel writeData =new WriteDataToExcel();
 		
 		
 	}
