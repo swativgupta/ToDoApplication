@@ -1,14 +1,7 @@
-import java.io.FileNotFoundException;
-import java.text.DateFormat;
+import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Iterator;
+
 /**This  is the entry point of to do list.
  * The application starts from here
  *  @author Swati Gupta
@@ -17,14 +10,15 @@ import java.util.Iterator;
 public class Main {
 
 	/**
+	 * This is the entry point of program and all initializations are done here
 	 * @param args
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, IOException, ParseException {
 		EntryPoint entry= new EntryPoint();
-		//toDoInitializations.tasktList;
-		toDoInitializations todoinitialization = new toDoInitializations();
-		todoinitialization.tasktList=todoinitialization.loadAllTasks();
-		//todoinitialization.count=  todoinitialization.loadAllTasks().size() ;
+			
 	    entry.mainMenu();
 		
 		
