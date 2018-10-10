@@ -2,6 +2,7 @@
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -14,13 +15,12 @@ import java.util.Scanner;
 
 public class EntryPoint {
 	TaskOrganiser taskOrganiser;
-	Validation validate = new Validation();
+	DateValidation validate = new DateValidation();
+	Constants constant;
 
-	// public EntryPoint(TaskOrganiser to) {
-	// this.taskOrganiser = to;
-	// }
 	public EntryPoint() throws ClassNotFoundException, IOException, ParseException {
 		this.taskOrganiser = new TaskOrganiser();
+		this.constant = new Constants();
 	}
 
 	/**
@@ -96,10 +96,10 @@ public class EntryPoint {
 				System.out.println(">> Task description, >> due date (mm/dd/yyyy) ,>> task status");
 
 				String description = takeUserInput();
-				String date = takeUserInput();
-
+				String dateEntered = takeUserInput();
+				Date date = validate.convertToDate(dateEntered);
 				String status = takeUserInput();
-				if (validate.validateDate(date) != null) {
+				if (validate.validateDueDate(date) != null) {
 					taskOrganiser.createTask(description, date, status);
 				} else {
 					System.out.println("Task is NOT CREATED .");
@@ -116,7 +116,7 @@ public class EntryPoint {
 				break;
 			case "4":
 
-				if (checkForTaskID().equalsIgnoreCase("y")) {
+				if (checkForTaskID().equalsIgnoreCase(Constants.YES)) {
 
 					System.out.println("Please enter taskid of Task for which you want to assign project to");
 					String taskId = takeUserInput();
@@ -124,7 +124,7 @@ public class EntryPoint {
 					if (taskOrganiser.taskExist(taskId)) {
 						String inputValue = takeUserInput();
 
-						taskOrganiser.updatetask(taskId, "Project", inputValue);
+						taskOrganiser.updatetask(taskId, Constants.PROJECT_TITLE, inputValue);
 
 					} else {
 
@@ -136,7 +136,7 @@ public class EntryPoint {
 				}
 				break;
 			case "5":
-				if (checkForTaskID().equalsIgnoreCase("y")) {
+				if (checkForTaskID().equalsIgnoreCase(Constants.YES)) {
 					System.out.println("Please enter taskid of Task for which you want to remove");
 					taskOrganiser.removeTask(takeUserInput());
 					taskOrganiser.showTaskList();
@@ -146,7 +146,7 @@ public class EntryPoint {
 				}
 				break;
 			case "6":
-				if (checkForTaskID().equalsIgnoreCase("y")) {
+				if (checkForTaskID().equalsIgnoreCase(Constants.YES)) {
 					System.out.println("Please enter taskid of Task for which you want to update");
 
 					updateTask(takeUserInput());
@@ -155,13 +155,9 @@ public class EntryPoint {
 					System.out.println("Type any other string to exit and return to main menu");
 				}
 				break;
-			case "8":
-				taskOrganiser.save();
-				wantToQuit = false;
-				break;
 
 			case "7":
-				if (checkForProject().equalsIgnoreCase("y")) {
+				if (checkForProject().equalsIgnoreCase(Constants.YES)) {
 					System.out.println("Please enter project for which you want to filter");
 					String project = takeUserInput();
 					taskOrganiser.filterByProject(project);
@@ -170,6 +166,10 @@ public class EntryPoint {
 					System.out.println("Type any other string to exit and return to main menu");
 				}
 
+				break;
+			case "8":
+				taskOrganiser.save();
+				wantToQuit = false;
 				break;
 
 			}
@@ -185,7 +185,7 @@ public class EntryPoint {
 	 */
 
 	public enum SubMenu {
-		dueDate(">> [1] Due Date"), taskDescription(">> [2] Task Description"), taskStatus(">> [3] Task Status"),
+		dueDate(">> [1] Due Date"), taskTitle(">> [2] Task Title"), taskStatus(">> [3] Task Status"),
 		Project(">> [4] Project"), QUIT(">> [5] Return To main Task List menu");
 
 		private String subMenu;
@@ -247,12 +247,10 @@ public class EntryPoint {
 
 			case "1":
 				System.out.println("Please enter date to be updated and format is mm/dd/yyyy");
-				String date = takeUserInput();
-				if (validate.validateDate(date) != null) {
+				String dateEntered = takeUserInput();
 
-					taskOrganiser.updatetask(taskId, "date", date);
+				taskOrganiser.updatetask(taskId, Constants.DATE, dateEntered);
 
-				}
 				break;
 
 			case "2":
@@ -260,7 +258,7 @@ public class EntryPoint {
 
 				String taskTitle = takeUserInput();
 
-				taskOrganiser.updatetask(taskId, "taskTitle", taskTitle);
+				taskOrganiser.updatetask(taskId, Constants.TASK_TITLE, taskTitle);
 
 				break;
 			case "3":
@@ -268,14 +266,14 @@ public class EntryPoint {
 
 				String taskStatus = takeUserInput();
 
-				taskOrganiser.updatetask(taskId, "taskStatus", taskStatus);
+				taskOrganiser.updatetask(taskId, Constants.TASK_STATUS, taskStatus);
 
 				break;
 			case "4":
 				System.out.println("Please enter Project to be updated");
 				String projectTitle = takeUserInput();
 
-				taskOrganiser.updatetask(taskId, "projectTitle", projectTitle);
+				taskOrganiser.updatetask(taskId, Constants.PROJECT_TITLE, projectTitle);
 
 				break;
 			case "5":

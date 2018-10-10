@@ -7,14 +7,12 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * This class contains fields for the Task
- * String taskId assigned to to all tasks to store unique Id 
- * String status for the task status 
- * String taskTitle to store the task title or description
- * String projectTitle to store the project title or description
- * String date for the dueDate of the task
- * int taskCount to keep track of total number of task in 
- * tasklist and is than used to generate task id
+ * This class contains fields for the Task String taskId assigned to to all
+ * tasks to store unique Id String status for the task status String taskTitle
+ * to store the task title or description String projectTitle to store the
+ * project title or description String date for the dueDate of the task int
+ * taskCount to keep track of total number of task in tasklist and is than used
+ * to generate task id
  */
 public class Task implements Comparable<Task> {
 
@@ -22,7 +20,7 @@ public class Task implements Comparable<Task> {
 	private String taskStatus;
 	private String taskTitle;
 	private String projectTitle;
-	private String dueDate;
+	private Date dueDate;
 	private int taskCount;
 
 	public int getTaskCount() {
@@ -41,11 +39,11 @@ public class Task implements Comparable<Task> {
 		this.projectTitle = projectDescription;
 	}
 
-	
 	public Task() {
 	}
-	//Constructor to create the Task Object
-	public Task(String taskDescription, String dueDate, String taskStatus, int taskCount) {
+
+	// Constructor to create the Task Object
+	public Task(String taskDescription, Date dueDate, String taskStatus, int taskCount) {
 		System.out.println("Inside the task constructor");
 		this.taskTitle = taskDescription;
 		this.taskId = taskDescription + generateId(taskCount);// Need to improve to get a unique Id
@@ -55,8 +53,7 @@ public class Task implements Comparable<Task> {
 
 	}
 
-
-	public Task(String taskId, String taskDescription, String taskStatus, String projectDescription, String dueDate) {
+	public Task(String taskId, String taskDescription, String taskStatus, String projectDescription, Date dueDate) {
 
 		this.taskId = taskId;
 		this.taskTitle = taskDescription;
@@ -67,16 +64,16 @@ public class Task implements Comparable<Task> {
 
 	@Override
 	public int compareTo(Task task) {
-		if (getDueDate() == null || task.getDueDate() == null)
-			return 0;
-		return getDueDate().compareTo(task.getDueDate());
+		if (getDueDate() != null && task.getDueDate() != null)
+			return this.getDueDate().compareTo(task.getDueDate());
+		return 0;
 	}
 
-	public String getDueDate() {
+	public Date getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(String dueDate) {
+	public void setDueDate(Date dueDate) {
 
 		this.dueDate = dueDate;
 	}
@@ -124,8 +121,8 @@ public class Task implements Comparable<Task> {
 
 	@Override
 	public String toString() {
-		return "Task [taskId=" + taskId + ", taskStatus=" + taskStatus + ", taskTitle=" + taskTitle
-				+ ", projectTitle=" + projectTitle + ", dueDate=" + dueDate + "]";
+		return "Task [taskId=" + taskId + ", taskStatus=" + taskStatus + ", taskTitle=" + taskTitle + ", projectTitle="
+				+ projectTitle + ", dueDate=" + dueDate + "]";
 	}
 
 }

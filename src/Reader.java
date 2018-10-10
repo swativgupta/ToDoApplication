@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,11 +18,13 @@ public class Reader {
 	private static final int NUMBER_OF_FIELDS = 5;
 	// Index values for the fields in each record.
 	private static final int TaskId = 0, TaskDescription = 1, TaskStatus = 2, ProjectDescription = 3, DueDate = 4;
+	DateValidation validate;
 
 	/**
-	 * Create a SightingReader.
+	 * Create a Task Reader.
 	 */
 	public Reader() {
+		validate = new DateValidation();
 	}
 
 	/**
@@ -31,7 +34,7 @@ public class Reader {
 	 * @param filename The file to be read - should be in CSV format.
 	 * @return A list of Sightings.
 	 */
-	public ArrayList<Task> getTasks(String filename) {
+	public ArrayList<Task> getTasks(String filename) throws Exception {
 		// Create a TaskList from a CSV input line.
 		Function<String, Task> createTask = record -> {
 			String[] parts = record.split(",");
@@ -42,7 +45,8 @@ public class Reader {
 					String taskStatus = parts[TaskStatus].trim();
 					String projectDescription = parts[ProjectDescription].trim();
 					String dueDate = parts[DueDate].trim();
-					return new Task(taskId, taskDescription, taskStatus, projectDescription, dueDate);
+					Date date = validate.convertToDate(dueDate);
+					return new Task(taskId, taskDescription, taskStatus, projectDescription, date);
 				} catch (NumberFormatException e) {
 					System.out.println("Task record has a malformed integer: " + record);
 					return null;

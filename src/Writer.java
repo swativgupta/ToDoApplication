@@ -19,10 +19,10 @@ public class Writer {
 	 */
 
 	public void writeToFile(String taskList) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(new File("ToDo.csv"));
+		PrintWriter pw = new PrintWriter(new File(Constants.FILE_PATH));
 		pw.write(taskList);
 		pw.close();
-		System.out.println("done!");
+		System.out.println(Constants.SAVE);
 	}
 
 }
