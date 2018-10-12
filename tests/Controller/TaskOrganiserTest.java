@@ -39,14 +39,14 @@ import model.Task;
  * @author tmp-sda-1167
  *
  */
+/**
+ * @author tmp-sda-1167
+ *
+ */
 class TaskOrganiserTest {
 	SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
 	TaskOrganiser to ;
-	
-	
-	
-	
-	/**
+		/**
 	 * @throws java.lang.Exception
 	 */
 	
@@ -55,42 +55,41 @@ class TaskOrganiserTest {
 		to= new TaskOrganiser();
 	}
 
-	
+	/**
+	 * Method to mock data {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 		// Helper methods
 	
 	private void CreateTaskForTest() throws ParseException{
 		to.removeAllTask();
 		sdf.setLenient(false);
-		Date dueDate1=sdf.parse("12/12/2018");
-		to.createTask("First TASK", dueDate1, "Pending");
 		
 		
 		sdf.setLenient(false);
 		Date dueDate2=sdf.parse("12/12/2019");
 		to.createTask("Second TASK", dueDate2, "Done");
 		
+		Date dueDate1=sdf.parse("12/12/2018");
+		to.createTask("First TASK", dueDate1, "Pending");
+		
 		sdf.setLenient(false);
 		Date dueDate3=sdf.parse("12/11/2019");
 		to.createTask("Third TASK", dueDate3, "WIP");
 		
 		sdf.setLenient(false);
-		Date dueDate4=sdf.parse("12/11/2018");
-		to.createTask("Fourth TASK", null, "Done");
+		Date dueDate4=sdf.parse("12/11/3019");
+		to.createTask("Third TASK", dueDate3, "WIP");
 		
-		sdf.setLenient(false);
-		Date dueDate5=sdf.parse("12/11/3019");
-		to.createTask("Fifth TASK", null, "Done");
+		
 	}
-	
+	/**
+	 * Method to mock data {@link TaskOrganiser#updateTaskk(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	private void UpdateTaskForTest() throws ParseException{
 		CreateTaskForTest();
 		
         ArrayList<Task> taskList= to.showTaskList();
-        taskList.get(0).getTaskDescrptionId();
-        taskList.get(1).getTaskDescrptionId();
-        taskList.get(2).getTaskDescrptionId();
-        taskList.get(3).getTaskDescrptionId();
-        taskList.get(4).getTaskDescrptionId();
+       
         
         Task task6=to.updatetask(taskList.get(0).getTaskDescrptionId(), Constants.PROJECT_TITLE, null);
         task6=to.updatetask(taskList.get(0).getTaskDescrptionId(), Constants.TASK_TITLE, "First task Updated");
@@ -100,11 +99,13 @@ class TaskOrganiserTest {
 		Task task3=to.updatetask(taskList.get(2).getTaskDescrptionId(), Constants.TASK_STATUS, "Status title is updated");
 		Task task4=to.updatetask(taskList.get(2).getTaskDescrptionId(), Constants.PROJECT_TITLE, "Project title is updated");
 		
-		Task task5=to.updatetask(taskList.get(3).getTaskDescrptionId(), Constants.PROJECT_TITLE, "Project is updated");
+		
 		
 		//Task task8=to.updatetask(taskList.get(4).getTaskDescrptionId(), Constants.PROJECT_TITLE, " ");
 	}
-	
+	/**
+	 * Below validation are done at view interfaces must be done before using Task Organiser interface
+	 */
 	public Date convertToDate(String dueDate) {
 		SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
 		sdf.setLenient(false);
@@ -120,6 +121,7 @@ class TaskOrganiserTest {
 	
 	/**
 	 * Test method for {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 * Test case for testing correct values
 	 */
 	@Test
 	public void testCreateTaskForOneCorrectTask() throws ClassNotFoundException, IOException, ParseException {
@@ -134,9 +136,10 @@ class TaskOrganiserTest {
 	}
 	/**
 	 * Test method for {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 * For checcking if create allows null status values 
 	 */
 	@Test
-	public void testCreateTaskFornullProject() throws ClassNotFoundException, IOException, ParseException {
+	public void testCreateTaskFornullStatus() throws ClassNotFoundException, IOException, ParseException {
 		
 		String date="12/12/2019";
 		
@@ -147,11 +150,12 @@ class TaskOrganiserTest {
 		assertTrue(to.createTask("SomeTASK", dueDate, null));
 	}
 	
+	
 	/**
 	 * Test method for {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
 	 */
 	@Test
-	public void testCreateTaskForEmptyProject() throws ClassNotFoundException, IOException, ParseException {
+	public void testCreateTaskForEmptyStatus() throws ClassNotFoundException, IOException, ParseException {
 		
 		String date="12/12/2019";
 		
@@ -162,6 +166,9 @@ class TaskOrganiserTest {
 		assertTrue(to.createTask("SomeTASK", dueDate, "  "));
 	}
 	
+	/**
+	 * Test method for {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	
 	@Test
 	public void testCreateTaskForFuture() throws ClassNotFoundException, IOException, ParseException {
@@ -173,6 +180,9 @@ class TaskOrganiserTest {
 	assertTrue(to.createTask("OtherTASK", dueDate, "Not Done"));
 		
 	}
+	/**
+	 * Test method for {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	
 	@Test
 	public void testCreateTaskForCurrent() throws ClassNotFoundException, IOException, ParseException {
@@ -183,9 +193,11 @@ class TaskOrganiserTest {
 	assertTrue(to.createTask("SomeTASK", dueDate, "Work in progress"));
 		
 	}
-
+	/**
+	 * Test method for {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
-	public void testCreateTaskOneTaskPreviousDate() throws ClassNotFoundException, IOException, ParseException {
+	public void testCreateTaskForPreviousDate() throws ClassNotFoundException, IOException, ParseException {
 		String date="12/12/2017";
 		sdf.setLenient(false);
 		Date dueDate=sdf.parse(date);
@@ -193,7 +205,9 @@ class TaskOrganiserTest {
 		assertTrue(to.createTask("SomeTASK", dueDate, "pending"));
 		
 	}
-	
+	/**
+	 * Test method for {@link TaskOrganiser#createTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testCreateTaskwrongFormat() throws ClassNotFoundException, IOException, ParseException {
 		String date = "12-12-2017";
@@ -215,7 +229,9 @@ class TaskOrganiserTest {
 		thrown.expectMessage("Not a valid format");
 		to.createTask("SomeTASK", sdf.parse(date), "PROJECT");
 	}*/
-	
+	/**
+	 * Test method for {@link TaskOrganiser#sortByDate(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testsortByDate() throws ParseException, ClassNotFoundException, IOException  {
 		
@@ -223,17 +239,22 @@ class TaskOrganiserTest {
 		
 		sdf.setLenient(false);
 		
-		Date dueDate=sdf.parse("12/11/2018");
+		Date dueDate=sdf.parse("12/12/2018");
 		
 		CreateTaskForTest();
 		
 		ArrayList<Task> taskList=to.sortByDate();
 		Date date=taskList.get(0).getDueDate();
+		System.out.println(date);
+		System.out.println(dueDate);
 		assertEquals(true,date.equals(dueDate) );
 		
 		}
 	// Tested for updates made in Arraylist when no task preExisted in files
 	
+	/**
+	 * Test method for {@link TaskOrganiser#updateTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testupdateTaskTitle() throws ParseException, ClassNotFoundException, IOException  {
 		
@@ -249,6 +270,9 @@ class TaskOrganiserTest {
 		Task task2 =to.updatetask(taskList.get(1).getTaskDescrptionId(), Constants.TASK_TITLE, "taskTitle2");
 		assertEquals("taskTitle2", task2.getTaskTitle());
 		}
+	/**
+	 * Test method for {@link TaskOrganiser#updateTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	
 	@Test
 	public void testupdateDueDate() throws ParseException, ClassNotFoundException, IOException  {
@@ -269,6 +293,9 @@ class TaskOrganiserTest {
 		Task task5 =to.updatetask(taskList.get(1).getTaskDescrptionId(), Constants.DATE, "11/23/9000");
 		assertEquals(date1, task5.getDueDate());
 		}
+	/**
+	 * Test method for {@link TaskOrganiser#updateTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testupdateStatus() throws ParseException, ClassNotFoundException, IOException  {
 		CreateTaskForTest();
@@ -283,6 +310,9 @@ class TaskOrganiserTest {
 		Task task5 =to.updatetask(taskList.get(1).getTaskDescrptionId(), Constants.TASK_STATUS, "In Progress");
 		assertEquals("In Progress", task5.getTaskStatus());
 		}
+	/**
+	 * Test method for {@link TaskOrganiser#updateTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testupdateProject() throws ParseException, ClassNotFoundException, IOException  {
 		CreateTaskForTest();
@@ -300,6 +330,9 @@ class TaskOrganiserTest {
 		assertEquals("Project3Updated", task6.getProjectTitle());
 		
 		}
+	/**
+	 * Test method for {@link TaskOrganiser#deleteTask(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testDeleteTask() throws ParseException, ClassNotFoundException, IOException {
 
@@ -309,6 +342,9 @@ class TaskOrganiserTest {
 		assertEquals(true, to.removeTask(taskList.get(0).getTaskDescrptionId()));
 
 	}
+	/**
+	 * Test method for {@link TaskOrganiser#filterByProject(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testFilterByProject() throws ParseException, ClassNotFoundException, IOException  {
 		UpdateTaskForTest();
@@ -320,22 +356,30 @@ class TaskOrganiserTest {
 		
 		
 		}
+	/**
+	 * Test method for {@link TaskOrganiser#filterByProject(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testFilterByNullProject() throws ParseException, ClassNotFoundException, IOException  {
 		UpdateTaskForTest();
-		ArrayList<Task> taskList= to.showTaskList();
+		
 		ArrayList<Task> taskListFilterByProject= to.filterByProject(null);
-		assertEquals(null,taskListFilterByProject.size());
+		assertEquals(2,taskListFilterByProject.size());
 	}
-	
+	/**
+	 * Test method for {@link TaskOrganiser#filterByProject(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testFilterBynotExistingProject() throws ParseException, ClassNotFoundException, IOException  {
 		UpdateTaskForTest();
-		ArrayList<Task> taskList= to.showTaskList();
+		
 		ArrayList<Task> taskListFilterByProject= to.filterByProject(("Not Exists in my task list and is hard coded make sure it does not exists while testing").trim());
 		assertEquals(0,taskListFilterByProject.size());
 		
 	}
+	/**
+	 * Test method for {@link TaskOrganiser#save(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testSaveWhenNoFileExists() throws ClassNotFoundException, IOException, ParseException  {
 		File file = new File("ToDo.csv");
@@ -345,6 +389,9 @@ class TaskOrganiserTest {
 		assertEquals(true,to.save());
 		
 	}
+	/**
+	 * Test method for {@link TaskOrganiser#save(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testSaveWhenEmptyFileExists() throws ClassNotFoundException, IOException, ParseException  {
 		File file = new File("ToDo.csv");
@@ -362,7 +409,9 @@ class TaskOrganiserTest {
 		
 		}
 		
-	
+	/**
+	 * Test method for {@link TaskOrganiser#save(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testSaveWhenTaskExistInFile() throws ClassNotFoundException, IOException, ParseException  {
 		CreateTaskForTest();
@@ -374,6 +423,9 @@ class TaskOrganiserTest {
 		assertEquals(true,to.save());
 		
 	}
+	/**
+	 * Test method for {@link TaskOrganiser#save(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testSaveWhenTaskExistInArrayList() throws ClassNotFoundException, IOException, ParseException  {
 		CreateTaskForTest();
@@ -381,6 +433,9 @@ class TaskOrganiserTest {
 		assertEquals(true,to.save());
 		
 	}
+	/**
+	 * Test method for {@link TaskOrganiser#save(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testSaveWhenNoExistInArrayList() throws ClassNotFoundException, IOException, ParseException  {
 		
@@ -389,6 +444,9 @@ class TaskOrganiserTest {
 		ArrayList<Task> taskList= to.showTaskList();
 		assertEquals(true,to.save());
 	}
+	/**
+	 * Test method for {@link TaskOrganiser#save(java.lang.String, java.util.Date, java.lang.String)}.
+	 */
 	@Test
 	public void testSaveWhenUpdatedTaskExistInArrayList() throws ClassNotFoundException, IOException, ParseException  {
 		UpdateTaskForTest();

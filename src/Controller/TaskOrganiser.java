@@ -292,7 +292,7 @@ public class TaskOrganiser {
 
 				break;
 			} else {
-				System.out.println("There is no task with task Id :: " + taskID);
+				//System.out.println("There is no task with task Id :: " + taskID);
 				taskExist = false;
 			}
 
@@ -410,9 +410,9 @@ public class TaskOrganiser {
 			if ((todo.getProjectTitle() != null) && todo.getProjectTitle().equalsIgnoreCase(project)) {
 				taskByProject.add(todo);
 
-			} else if (project.equals(null)) {
+			} else if (project== null || project.equals(null)) {
 
-				if (todo.getProjectTitle().equals(null)) {
+				if ((todo.getProjectTitle()== null)  || todo.getProjectTitle().equals(null)) {
 					taskByProject.add(todo);
 				}
 
