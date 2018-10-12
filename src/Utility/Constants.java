@@ -1,16 +1,17 @@
+package Utility;
 
 public class Constants {
 	
 	public final static String YES="y";
 	
-	public final static String PROJECT_TITLE="projectTitle";
+	public final static String PROJECT_TITLE="Project Title";
 	
 	public final static String DATE="date";
-	public final static String TASK_TITLE="taskTitle";
+	public final static String TASK_TITLE="Task Title";
 
-	public static final String TASK_STATUS = "taskStatus";
+	public static final String TASK_STATUS = "Task Status";
 
-	public static final String DATE_FORMAT = "\"mm/dd/yyyy\"";
+	public static final String DATE_FORMAT = "mm/dd/yyyy";
 
 	public static final String FILE_PATH = "ToDo.csv";
 

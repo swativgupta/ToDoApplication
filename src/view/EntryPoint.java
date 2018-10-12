@@ -1,13 +1,19 @@
+package view;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import Controller.TaskOrganiser;
+import Utility.Constants;
+import Utility.Validator;
+
 /**
- * This class acts as a controller class as well as user interface for the
- * application
+ * This class is the user interface for the application
+ * 
  * 
  * @author Swati Gupta
  * @version 2018.09.27
@@ -15,7 +21,7 @@ import java.util.Scanner;
 
 public class EntryPoint {
 	TaskOrganiser taskOrganiser;
-	DateValidation validate = new DateValidation();
+	Validator validate = new Validator();
 	Constants constant;
 
 	public EntryPoint() throws ClassNotFoundException, IOException, ParseException {
@@ -93,17 +99,35 @@ public class EntryPoint {
 			switch (inputString) {
 			case "1":
 				System.out.println("To create your task please enter your fields one by one in below order");
-				System.out.println(">> Task description, >> due date (mm/dd/yyyy) ,>> task status");
+				System.out.println(">> Task description , >> task status , >> due date (mm/dd/yyyy) ");
 
 				String description = takeUserInput();
-				String dateEntered = takeUserInput();
-				Date date = validate.convertToDate(dateEntered);
+
 				String status = takeUserInput();
-				if (validate.validateDueDate(date) != null) {
-					taskOrganiser.createTask(description, date, status);
-				} else {
-					System.out.println("Task is NOT CREATED .");
+				String dateEntered = takeUserInput();
+
+				// Validation for date
+
+				boolean dateValid = true;
+
+				Date date = null;
+				while (dateValid) {
+					if (dateEntered.equals("") || dateEntered.isEmpty()) {
+						System.out.println("You have not entered a valid date.Please enter a valid date");
+						dateEntered = takeUserInput();
+					} else if (!dateEntered.equals("") && !dateEntered.isEmpty()) {
+						date = validate.convertToDate(dateEntered);
+						if (date != null) {
+							dateValid = false;
+						} else {
+							System.out.println("You have not entered a valid date.Please enter a valid date");
+							dateEntered = takeUserInput();
+						}
+
+					}
+
 				}
+				taskOrganiser.createTask(description, date, status);
 				break;
 
 			case "2":
@@ -122,6 +146,7 @@ public class EntryPoint {
 					String taskId = takeUserInput();
 
 					if (taskOrganiser.taskExist(taskId)) {
+						System.out.println("Found a task with provided Id");
 						String inputValue = takeUserInput();
 
 						taskOrganiser.updatetask(taskId, Constants.PROJECT_TITLE, inputValue);
@@ -234,9 +259,10 @@ public class EntryPoint {
 	 * 
 	 * @author Swati Gupta
 	 * @version 2018.09.27
+	 * @throws ParseException
 	 */
 
-	public void showTaskDetailMenu(String taskId) {
+	public void showTaskDetailMenu(String taskId) throws ParseException {
 		System.out.println("Please enter the field that you want to update for task Id " + taskId);
 
 		boolean wantToQuit = true;
@@ -249,6 +275,34 @@ public class EntryPoint {
 				System.out.println("Please enter date to be updated and format is mm/dd/yyyy");
 				String dateEntered = takeUserInput();
 
+				/*
+				 * if (!dateEntered.equals("") && !dateEntered.isEmpty()) {
+				 * taskOrganiser.updatetask(taskId, Constants.DATE, dateEntered); } else {
+				 * 
+				 * SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
+				 * sdf.setLenient(false); Date dueDate = sdf.parse("00/00/0000");
+				 * 
+				 * taskOrganiser.updatetask(taskId, Constants.DATE, dateEntered); }
+				 */
+
+				boolean dateValid = true;
+
+				Date date = null;
+				while (dateValid) {
+					if (dateEntered.equals("") || dateEntered.isEmpty()) {
+						System.out.println("You have not entered a valid date.Please enter a valid date");
+						dateEntered = takeUserInput();
+					} else if (!dateEntered.equals("") && !dateEntered.isEmpty()) {
+						date = validate.convertToDate(dateEntered);
+						if (date != null) {
+							dateValid = false;
+						} else {
+							System.out.println("You have not entered a valid date.Please enter a valid date");
+							dateEntered = takeUserInput();
+						}
+
+					}
+				}
 				taskOrganiser.updatetask(taskId, Constants.DATE, dateEntered);
 
 				break;
@@ -297,9 +351,10 @@ public class EntryPoint {
 	 * 
 	 * @author Swati Gupta
 	 * @version 2018.09.27
+	 * @throws ParseException
 	 */
 
-	public void updateTask(String taskID) {
+	public void updateTask(String taskID) throws ParseException {
 		System.out.println("Task to be updated is :: " + taskID);
 		// Validate if task exists
 
@@ -326,6 +381,13 @@ public class EntryPoint {
 		String n = reader.nextLine();
 		return n;
 	}
+	
+	/**
+	 * Below method for user so that he/she can proceed if he/she knows taskId or just return back
+	 * 
+	 * @author Swati Gupta
+	 * @version 2018.09.27
+	 */
 
 	public String checkForTaskID() {
 		System.out.println("If you know the task Id of task you want to edit or removet type Y  ");
@@ -334,6 +396,12 @@ public class EntryPoint {
 
 		return checkProceed;
 	}
+	/**
+	 * Below method for user so that he/she can proceed if he/she knows Project or just return back
+	 * 
+	 * @author Swati Gupta
+	 * @version 2018.09.27
+	 */
 
 	public String checkForProject() {
 		System.out.println("If you know the project title please type Y  ");
