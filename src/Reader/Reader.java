@@ -1,10 +1,15 @@
+package Reader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import Utility.Validator;
+import model.Task;
 
 /**
  * This class will be responsible to read data from file
@@ -18,13 +23,13 @@ public class Reader {
 	private static final int NUMBER_OF_FIELDS = 5;
 	// Index values for the fields in each record.
 	private static final int TaskId = 0, TaskDescription = 1, TaskStatus = 2, ProjectDescription = 3, DueDate = 4;
-	DateValidation validate;
+	Validator validate;
 
 	/**
 	 * Create a Task Reader.
 	 */
 	public Reader() {
-		validate = new DateValidation();
+		validate = new Validator();
 	}
 
 	/**
@@ -47,7 +52,7 @@ public class Reader {
 					String dueDate = parts[DueDate].trim();
 					Date date = validate.convertToDate(dueDate);
 					return new Task(taskId, taskDescription, taskStatus, projectDescription, date);
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException | ParseException e) {
 					System.out.println("Task record has a malformed integer: " + record);
 					return null;
 				}
