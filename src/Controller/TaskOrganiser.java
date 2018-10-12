@@ -1,5 +1,7 @@
+package Controller;
 
 import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,8 +9,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-/**
- * Task Organiser class organises all the Tasks all the functions to manage task
+import Reader.Reader;
+import Utility.Constants;
+import Utility.Validator;
+import Writer.Writer;
+import model.Task;
+
+/* organises all the Tasks all the functions to manage task
  * will be implimented here like show tasks,create task,Sort them by date and so
  * on
  * 
@@ -17,17 +24,25 @@ import java.util.Date;
  */
 public class TaskOrganiser {
 
-	DateValidation validate;
+	Validator validate;
 	Writer writeCsv;
 	Reader reader;
 	ArrayList<Task> tasks;
 
 	public TaskOrganiser() throws ClassNotFoundException, IOException, ParseException {
 		this.tasks = this.load(Constants.FILE_PATH);
-		validate = new DateValidation();
+		validate = new Validator();
 		reader = new Reader();
 
 	}
+
+	/**
+	 * Provides the size of Task List.
+	 * 
+	 * @author Swati Gupta
+	 * 
+	 * @return int (Total number of tasks)
+	 */
 
 	public int sizeOfTaskList() {
 
@@ -43,20 +58,19 @@ public class TaskOrganiser {
 	 * Creates valid task.
 	 * 
 	 * @author Swati Gupta
-	 * @pram taskDescription
-	 * @pram dueDate
-	 * @pram taskStatus
-	 * @return boolean
+	 * @pram taskDescription (It is Task title)
+	 * @pram dueDate (Due date is mandatory)
+	 * @pram taskStatus (It is Task Status)
+	 * @return boolean (returns true if task is created)
 	 */
 
 	public boolean createTask(String taskDescription, Date dueDate, String taskStatus) throws ParseException {
 
-		if (validate.validateDueDate(dueDate) != null) {
+		if (dueDate != null) {
 			Task task = new Task(taskDescription, dueDate, taskStatus, tasks.size());
 			tasks.add(task);
 			return true;
 		} else {
-			System.out.println("Task is NOT CREATED .");
 			return false;
 		}
 
@@ -66,13 +80,20 @@ public class TaskOrganiser {
 	 * Shows all the tasks
 	 * 
 	 * @author Swati Gupta
-	 * 
+	 * @return ArrayList of tasks
 	 */
-	public ArrayList<Task> showTaskList() {
+	public ArrayList<Task> showTaskList() throws NullPointerException {
 
-		for (Task todo : tasks) {
+		System.out.printf("%-20s %-20s  %-30s %-20s %-20s\n", Constants.TASK_ID, Constants.TASK_STATUS,
+				Constants.DUE_DATE.toString(), Constants.PROJECT_TITLE, Constants.TASK_TITLE);
 
-			System.out.println(todo.toString());
+		for (Task t : tasks) {
+			/*
+			 * System.out.printf("%-20s %-20s  %-30s %-20s %-20s\n",
+			 * t.getTaskDescrptionId(), t.getTaskStatus(), t.getDueDate().toString(),
+			 * t.getProjectTitle(), t.getTaskTitle());
+			 */
+			System.out.println(t.toString());
 
 		}
 
@@ -83,19 +104,26 @@ public class TaskOrganiser {
 	 * Sort all the tasks by date
 	 * 
 	 * @author Swati Gupta
-	 * 
+	 * @return ArrayList of tasks which are sorted
 	 */
-	// add changes
 
-	public void sortByDate() {
+	public ArrayList<Task> sortByDate() {
 		Collections.sort(tasks);
 		System.out.println("Total tasks in your to do list are " + tasks.size());
-		for (Task todo : tasks) {
+		System.out.printf("%-20s %-20s  %-30s %-20s %-20s\n", Constants.TASK_ID, Constants.TASK_STATUS,
+				Constants.DUE_DATE.toString(), Constants.PROJECT_TITLE, Constants.TASK_TITLE);
 
-			System.out.println(todo.toString());
+		for (Task t : tasks) {
+
+			/*
+			 * System.out.printf("%-20s %-20s  %-30s %-20s %-20s\n",
+			 * t.getTaskDescrptionId(), t.getTaskStatus(), t.getDueDate().toString(),
+			 * t.getProjectTitle(), t.getTaskTitle());
+			 */
+			System.out.println(t.toString());
 
 		}
-
+		return tasks;
 	}
 
 	/**
@@ -103,12 +131,12 @@ public class TaskOrganiser {
 	 * 
 	 * @author Swati Gupta
 	 * 
-	 * @return int task done
+	 * @return int tasks with status as done
 	 */
 	public int calculateTaskDone() {
 		int doneTask = 0;
-		Collections.sort(tasks);
-//		System.out.println("Total tasks in your to do list are " + tasks.size());
+
+		// System.out.println("Total tasks in your to do list are " + tasks.size());
 
 		for (Task task : tasks) {
 			if (task.getTaskStatus().equalsIgnoreCase(Constants.DONE_STATUS)) {
@@ -125,70 +153,97 @@ public class TaskOrganiser {
 	 * Update the task for specified task Id in parameter
 	 * 
 	 * @author Swati Gupta
-	 * @pram String taskID
-	 * @pram String field
-	 * @pram String value
-	 * @return boolean status
+	 * @pram String taskID is system generated
+	 * @pram String field to identify which task field has to be updated (Task
+	 *       Title,Task status,project title,Date )
+	 * @pram String values that user have entered to update
+	 * @return boolean status returns true if task is updated
+	 * @throws ParseException
 	 */
-	public boolean updatetask(String taskId, String field, String value) {
+	public Task updatetask(String taskId, String field, String value) throws ParseException {
 		Task task = fetchTaskById(taskId);
-		boolean updateStatus = false;
+		// boolean updateStatus = false;
 		if (task != null) {
 			if (field.equalsIgnoreCase(Constants.DATE)) {
 				Date date = validate.convertToDate(value);
-				if (validate.validateDueDate(date) != null) {
-					task.setDueDate(date);
-					updateStatus = true;
-				} else {
-					System.out.println(
-							"Date is not a valid date the date format is mm/dd/yyyy and only future date is allowed.");
-					updateStatus = false;
-				}
+				task.setDueDate(date);
+				/*
+				 * if (validate.validateDueDate(date)) { task.setDueDate(date); // updateStatus
+				 * = true; } else { System.out.println(
+				 * "Date is not a valid date the date format is mm/dd/yyyy and only future date is allowed."
+				 * ); // updateStatus = false; }
+				 */
 
 			} else if (field.equalsIgnoreCase(Constants.TASK_TITLE)) {
 				task.setTaskTitle(value);
-				updateStatus = true;
+				// updateStatus = true;
 			} else if (field.equalsIgnoreCase(Constants.TASK_STATUS)) {
 				task.setTaskStatus(value);
-				updateStatus = true;
+				// updateStatus = true;
 			} else if (field.equalsIgnoreCase(Constants.PROJECT_TITLE)) {
 				task.setProjectTitle(value);
-				updateStatus = true;
+				// updateStatus = true;
 			}
 
 		} else {
 
 			System.out.println("There is no task for given task Id");
-			updateStatus = false;
+			// updateStatus = false;
 		}
 		System.out.println("The Task is updated as below");
+		System.out.printf("%-20s %-20s  %-30s %-20s %-20s\n", Constants.TASK_ID, Constants.TASK_STATUS,
+				Constants.DUE_DATE.toString(), Constants.PROJECT_TITLE, Constants.TASK_TITLE);
 		System.out.println(task.toString());
-		return updateStatus;
+		return task;
 	}
 
 	/**
 	 * Delete the task for specified task Id in parameter
 	 * 
 	 * @author Swati Gupta
-	 * @pram String taskID
-	 * @return boolean status
+	 * @pram String taskID to identify which task has to be updated
+	 * @return boolean status returns true if task is deleted
 	 */
 
 	public boolean removeTask(String taskID) {
 		System.out.println("Removing the task with task ID :: " + taskID);
 		boolean status = false;
-		Task task = fetchTaskById(taskID);
-		if (task != null) {
+		if (taskID != null && !taskID.equals("")) {
+			Task task = fetchTaskById(taskID);
+			if (task != null) {
 
-			status = tasks.remove(task);
-			System.out.println(">>> Task Successfully Deleted");
+				status = tasks.remove(task);
+				System.out.println(">>> Task Successfully Deleted");
 
+			} else {
+
+				System.out.println(">>> No Task Deleted");
+			}
+			// System.out.println("Task deletion status for the task with task ID is :: " +
+			// taskID);
+		}
+		return status;
+
+	}
+
+	/**
+	 * Delete all the tasks added for testing purpose
+	 * 
+	 * @author Swati Gupta
+	 *
+	 * @return boolean status true if all tasks are deleted
+	 */
+
+	public boolean removeAllTask() {
+		System.out.println("Removing all tasks  ");
+		boolean status = false;
+		if (tasks.size() > 0) {
+			tasks.clear();
 		} else {
 
-			System.out.println(">>> No Task Deleted");
+			System.out.println("tasklist is empty");
+			return true;
 		}
-		// System.out.println("Task deletion status for the task with task ID is :: " +
-		// taskID);
 		return status;
 
 	}
@@ -197,7 +252,7 @@ public class TaskOrganiser {
 	 * Utility function to fetch the task for given task ID
 	 * 
 	 * @author Swati Gupta
-	 * @pram String taskID
+	 * @pram String taskID to fetch the task of specified ID
 	 * @return Task Object
 	 */
 
@@ -251,7 +306,7 @@ public class TaskOrganiser {
 	 * 
 	 * @author Swati Gupta
 	 * @pram String taskID
-	 * @return boolean
+	 * @return boolean true if saved successfully
 	 */
 	public boolean save() {
 		Writer w = new Writer();
@@ -297,8 +352,8 @@ public class TaskOrganiser {
 	 * 
 	 * 
 	 * @author Swati Gupta
-	 * @pram String filename
-	 * @return Arraylist of tasks
+	 * @pram Date date
+	 * @return String date
 	 */
 
 	private String dateToString(Date date) {
@@ -355,14 +410,22 @@ public class TaskOrganiser {
 			if ((todo.getProjectTitle() != null) && todo.getProjectTitle().equalsIgnoreCase(project)) {
 				taskByProject.add(todo);
 
+			} else if (project.equals(null)) {
+
+				if (todo.getProjectTitle().equals(null)) {
+					taskByProject.add(todo);
+				}
+
 			}
 		}
 		if (taskByProject != null) {
 
 			if (taskByProject != null && taskByProject.size() > 0) {
-				for (Task todo : taskByProject) {
+				System.out.printf("%-20s %-20s  %-30s %-20s %-20s\n", Constants.TASK_ID, Constants.TASK_STATUS,
+						Constants.DUE_DATE.toString(), Constants.PROJECT_TITLE, Constants.TASK_TITLE);
+				for (Task t : taskByProject) {
 
-					System.out.println(todo.toString());
+					System.out.printf(t.toString());
 
 				}
 

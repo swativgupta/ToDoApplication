@@ -1,3 +1,5 @@
+package model;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,8 +45,9 @@ public class Task implements Comparable<Task> {
 	}
 
 	// Constructor to create the Task Object
-	public Task(String taskDescription, Date dueDate, String taskStatus, int taskCount) {
+	public Task(String taskDescription, Date dueDate, String taskStatus, int taskCount) throws ParseException {
 		System.out.println("Inside the task constructor");
+
 		this.taskTitle = taskDescription;
 		this.taskId = taskDescription + generateId(taskCount);// Need to improve to get a unique Id
 		this.taskStatus = taskStatus;
@@ -53,8 +56,8 @@ public class Task implements Comparable<Task> {
 
 	}
 
-	public Task(String taskId, String taskDescription, String taskStatus, String projectDescription, Date dueDate) {
-
+	public Task(String taskId, String taskDescription, String taskStatus, String projectDescription, Date dueDate) throws ParseException {
+		
 		this.taskId = taskId;
 		this.taskTitle = taskDescription;
 		this.taskStatus = taskStatus;
@@ -65,16 +68,19 @@ public class Task implements Comparable<Task> {
 	@Override
 	public int compareTo(Task task) {
 		if (getDueDate() != null && task.getDueDate() != null)
+		{
 			return this.getDueDate().compareTo(task.getDueDate());
-		return 0;
+		}else {
+		return 1;
+		}
 	}
 
 	public Date getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate) {
-
+	public void setDueDate(Date dueDate) throws ParseException {
+		
 		this.dueDate = dueDate;
 	}
 
@@ -121,8 +127,12 @@ public class Task implements Comparable<Task> {
 
 	@Override
 	public String toString() {
-		return "Task [taskId=" + taskId + ", taskStatus=" + taskStatus + ", taskTitle=" + taskTitle + ", projectTitle="
-				+ projectTitle + ", dueDate=" + dueDate + "]";
+		
+		
+		return String.format("%-20s %-20s  %-30s %-20s %-20s\n", taskId, taskStatus,
+		dueDate, projectTitle, taskTitle);
+		//return "Task [taskId=" + taskId + ", taskStatus=" + taskStatus + ", taskTitle=" + taskTitle + ", projectTitle="
+		//		+ projectTitle + ", dueDate=" + dueDate + "]";
 	}
 
 }
