@@ -13,3 +13,5 @@ interface.
 To start this application, run the main class.
 
 This project was written as a part of SDA 4 individual project.
+
+For setting up project clone the project and than import to your latest eclipse IDE 
